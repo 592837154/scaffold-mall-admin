@@ -1,0 +1,8 @@
+node_modules
+.umi
+.umi-production
+.env.local
+dist
+pnpm-lock.yaml
+npm-debug.log*
+yarn-error.log
