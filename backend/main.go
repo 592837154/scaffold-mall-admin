@@ -95,14 +95,16 @@ func mysqlDSN() string {
 	user := env("MYSQL_USER", "mall")
 	password := env("MYSQL_PASSWORD", "mall123456")
 	database := env("MYSQL_DATABASE", "mall_admin")
+	tls := env("MYSQL_TLS", "false")
 
 	return fmt.Sprintf(
-		"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local&tls=%s",
 		user,
 		password,
 		host,
 		port,
 		database,
+		tls,
 	)
 }
 

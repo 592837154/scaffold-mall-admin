@@ -1,0 +1,6 @@
+.git
+.env
+frontend/node_modules
+frontend/.umi
+frontend/.umi-production
+backend/goods.db
