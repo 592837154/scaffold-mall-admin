@@ -1,3 +1,13 @@
+---
+title: Mall Admin
+emoji: 🛒
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Mall Admin
 
 本项目包含两个运行容器：
