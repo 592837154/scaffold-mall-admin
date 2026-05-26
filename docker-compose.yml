@@ -1,0 +1,30 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: mall-admin-frontend
+    depends_on:
+      goods-api:
+        condition: service_started
+    ports:
+      - "8000:80"
+    restart: unless-stopped
+
+  goods-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: f-goods-api:latest
+    container_name: mall-admin-goods-api
+    environment:
+      MYSQL_HOST: gateway01.ap-northeast-1.prod.aws.tidbcloud.com
+      MYSQL_PORT: "4000"
+      MYSQL_USER: 3d1HaJiKd8td5iE.root
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: mall_admin
+      # TiDB Cloud requires TLS. skip-verify keeps the scratch image small for demos.
+      MYSQL_TLS: skip-verify
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
