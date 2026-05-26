@@ -2,7 +2,7 @@ FROM docker.m.daocloud.io/library/node:22-alpine AS frontend-builder
 
 WORKDIR /src
 
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@9.15.9 --activate
 
 COPY frontend/package.json frontend/pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
