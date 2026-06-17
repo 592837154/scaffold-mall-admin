@@ -66,6 +66,13 @@ const statusValueEnum = {
   off: { text: '已下架', status: 'Default' },
 };
 
+/**
+ * 发送 JSON 请求并解析后端统一响应结构。
+ * @param url 请求地址，可以包含查询字符串。
+ * @param init fetch 初始化配置，调用方可传入请求方法、请求体和额外请求头。
+ * @returns 后端响应中的 `data` 字段。
+ * @sideEffects 发起网络请求；请求失败或业务失败时抛出错误。
+ */
 const requestJSON = async <T,>(url: string, init?: RequestInit): Promise<T> => {
   const response = await fetch(url, {
     headers: {
@@ -83,6 +90,12 @@ const requestJSON = async <T,>(url: string, init?: RequestInit): Promise<T> => {
   return result.data;
 };
 
+/**
+ * 查询商品分页列表并适配 ProTable 的数据格式。
+ * @param params ProTable 传入的分页和筛选参数。
+ * @returns 包含商品列表、总数和成功状态的表格数据。
+ * @sideEffects 发起商品列表网络请求；不会直接修改组件状态。
+ */
 const queryProducts = async (params: ProductQuery) => {
   const searchParams = new URLSearchParams();
   searchParams.set('current', String(params.current || 1));
@@ -107,6 +120,13 @@ const queryProducts = async (params: ProductQuery) => {
   };
 };
 
+/**
+ * 新建或更新商品资料。
+ * @param values 商品表单字段。
+ * @param id 传入商品 id 时执行更新，否则执行新建。
+ * @returns 无返回值。
+ * @sideEffects 发起写入类网络请求，成功后由调用方刷新表格。
+ */
 const saveProduct = async (values: ProductFormValues, id?: number) => {
   await requestJSON<ProductItem>(id ? '/api/goods/update' : '/api/goods/create', {
     method: id ? 'PUT' : 'POST',
@@ -114,12 +134,23 @@ const saveProduct = async (values: ProductFormValues, id?: number) => {
   });
 };
 
+/**
+ * 删除指定商品。
+ * @param id 需要删除的商品 id。
+ * @returns 无返回值。
+ * @sideEffects 发起删除网络请求，成功后由调用方刷新表格。
+ */
 const deleteProduct = async (id: number) => {
   await requestJSON<{ id: number }>(`/api/goods/delete?id=${id}`, {
     method: 'DELETE',
   });
 };
 
+/**
+ * 渲染商品管理页面。
+ * @returns 商品列表和商品编辑弹窗。
+ * @sideEffects 表格查询和表单提交会访问后端接口。
+ */
 const ProductManage: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [modalOpen, setModalOpen] = useState(false);
